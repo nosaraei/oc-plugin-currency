@@ -20,6 +20,9 @@ class CreateCurrenciesTable extends Migration
             $table->boolean('place_symbol_before')->default(true);
             $table->boolean('is_enabled')->default(false);
             $table->boolean('is_primary')->default(false);
+            $table->boolean('is_default')->default(false);
+            $table->decimal('to_main_ratio', 8, 4)->nullable();
+            $table->integer('main_currency_id')->nullable()->unsigned();
             $table->timestamps();
         });
     }

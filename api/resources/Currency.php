@@ -14,8 +14,7 @@ use System\Traits\Resource;
  *    "currency_symbol": "$",
  *    "decimal_point": ".",
  *    "thousand_separator": ",",
- *    "place_symbol_before": 1,
- *    "ratio": 1.25 // or null
+ *    "place_symbol_before": 1
  * }
  */
 class Currency extends \Responsiv\Currency\Models\Currency {

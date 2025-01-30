@@ -11,11 +11,17 @@ use ValidationException;
 class Currency extends Model
 {
     use \October\Rain\Database\Traits\Validation;
-
+    
+    public $implement = ['@RainLab.Translate.Behaviors.TranslatableModel'];
+    
     /**
      * @var string The database table used by the model.
      */
     public $table = 'responsiv_currency_currencies';
+    
+    public $translatable = [
+        "name",
+    ];
 
     /**
      * @var array Guarded fields
@@ -52,9 +58,14 @@ class Currency extends Model
     protected static $cacheListAvailable;
 
     /**
-     * @var self Default currency cache.
+     * @var self Primary currency cache.
      */
     private static $primaryCurrency;
+    
+    /**
+     * @var self Default currency cache.
+     */
+    private static $defaultCurrency;
 
     /**
      * Formats supplied currency to supplied settings.
@@ -132,6 +143,26 @@ class Currency extends Model
             ->remember(1440, 'responsiv.currency.primaryCurrency')
             ->first()
         ;
+    }
+    
+    public static function getDefault()
+    {
+        if(self::$defaultCurrency !== null){
+            return self::$defaultCurrency;
+        }
+        
+        $default = request()->header("CurrencyISO");
+        
+        if($default){
+            self::$defaultCurrency = self::isEnabled()->where("currency_code", $default)->first();
+            
+            if(self::$defaultCurrency)
+                return self::$defaultCurrency;
+        }
+    
+        self::$defaultCurrency = self::where('is_default', true)->first();
+    
+        return self::$defaultCurrency ?: self::getPrimary();
     }
 
     /**

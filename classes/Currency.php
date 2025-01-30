@@ -1,4 +1,4 @@
-<?php namespace Responsiv\Currency\Helpers;
+<?php namespace Responsiv\Currency\Classes;
 
 use Responsiv\Currency\Models\Currency as CurrencyModel;
 use Responsiv\Currency\Classes\Converter as CurrencyConverter;

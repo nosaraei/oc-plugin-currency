@@ -1,6 +1,7 @@
 <?php namespace Responsiv\Currency;
 
 use Backend;
+use Responsiv\Currency\Api\Classes\Configuration;
 use System\Classes\PluginBase;
 use Illuminate\Foundation\AliasLoader;
 use Responsiv\Currency\Classes\Currency;
@@ -134,5 +135,13 @@ class Plugin extends PluginBase
             'Responsiv\Currency\ExchangeTypes\Fixer'               => 'fixer',
         ];
     }
-
+    
+    public function registerApiConfiguration(){
+        
+        return [
+            "config" => [
+                "currency" => [Configuration::class, "currency"]
+            ]
+        ];
+    }
 }

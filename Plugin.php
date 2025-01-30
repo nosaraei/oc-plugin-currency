@@ -3,7 +3,7 @@
 use Backend;
 use System\Classes\PluginBase;
 use Illuminate\Foundation\AliasLoader;
-use Responsiv\Currency\Facades\Currency as CurrencyFacade;
+use Responsiv\Currency\Classes\Currency;
 
 /**
  * Currency Plugin Information File
@@ -32,7 +32,7 @@ class Plugin extends PluginBase
     public function register()
     {
         $alias = AliasLoader::getInstance();
-        $alias->alias('Currency', 'Responsiv\Currency\Facades\Currency');
+        $alias->alias('Currency', Currency::class);
     }
 
     /**
@@ -89,7 +89,7 @@ class Plugin extends PluginBase
     {
         return [
             'filters' => [
-                'currency' => [CurrencyFacade::class, 'format']
+                'currency' => [Currency::class, 'format']
             ]
         ];
     }
@@ -102,7 +102,7 @@ class Plugin extends PluginBase
     {
         return [
             'currency' => function($value, $column) {
-                return CurrencyFacade::format($value, ['format' => $column->format]);
+                return Currency::format($value, ['format' => $column->format]);
             }
         ];
     }
@@ -132,9 +132,7 @@ class Plugin extends PluginBase
             'Responsiv\Currency\ExchangeTypes\EuropeanCentralBank' => 'ecb',
             'Responsiv\Currency\ExchangeTypes\CoinMarketCap'       => 'coinmarketcap',
             'Responsiv\Currency\ExchangeTypes\Fixer'               => 'fixer',
-            // 'Responsiv\Currency\ExchangeTypes\Yahoo'               => 'yahoo', // Discontinued
-            // 'Responsiv\Currency\ExchangeTypes\XeServices'          => 'xe',
-            // 'Responsiv\Currency\ExchangeTypes\Coinmill'            => 'coinmill',
         ];
     }
+
 }

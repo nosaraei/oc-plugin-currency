@@ -3,14 +3,6 @@
 use Responsiv\Currency\Models\Currency as CurrencyModel;
 use Responsiv\Currency\Classes\Converter as CurrencyConverter;
 
-/**
- * Currency helper
- *
- * Use the facade to access this class:
- *
- *   1. use Responsiv\Currency\Facades\Currency as CurrencyHelper;
- *   2. CurrencyHelper::method();
- */
 class Currency
 {
     /**
@@ -19,7 +11,7 @@ class Currency
      * @param array $options
      * @return string
      */
-    public function format($number, $options = [])
+    public static function format($number, $options = [])
     {
         $result = $number;
 
@@ -39,7 +31,7 @@ class Currency
         $fromCurrency = strtoupper($from);
 
         if ($toCurrency) {
-            $result = $this->convert($result, $toCurrency, $fromCurrency);
+            $result = self::convert($result, $toCurrency, $fromCurrency);
         }
 
         $currencyCode = $toCurrency ?: $in;
@@ -53,23 +45,33 @@ class Currency
             : number_format($result, $decimals);
 
         if ($format == 'long') {
-            $result .= ' ' . ($currencyCode ?: $this->primaryCode());
+            $result .= ' ' . ($currencyCode ?: self::primaryCode());
         }
 
         return $result;
     }
 
-    public function convert($value, $toCurrency, $fromCurrency = null)
+    public static function convert($value, $toCurrency, $fromCurrency = null)
     {
         if (!$fromCurrency) {
-            $fromCurrency = $this->primaryCode();
+            $fromCurrency = self::primaryCode();
         }
 
         return CurrencyConverter::instance()->convert($value, $fromCurrency, $toCurrency, null);
     }
 
-    public function primaryCode()
+    public static function primaryCode()
     {
         return CurrencyModel::getPrimary()->currency_code;
+    }
+    
+    public static function input($amount){
+        
+        return $amount;
+    }
+    
+    public static function output($amount){
+        
+        return $amount;
     }
 }
